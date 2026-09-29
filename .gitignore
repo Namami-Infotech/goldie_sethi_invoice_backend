@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+
+# Environment variables (contains sensitive credentials)
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Database & local storage
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDE and Editor files
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Temporary and build files
+dist/
+build/
+coverage/
+.temp/
+.cache/

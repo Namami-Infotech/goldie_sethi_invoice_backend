@@ -1,0 +1,81 @@
+const invoiceService = require('./invoice.service');
+
+class InvoiceController {
+  getAll = async (req, res) => {
+    try {
+      const { status, search } = req.query;
+      const invoices = await invoiceService.getAllInvoices(status, search);
+      res.json({ success: true, data: invoices });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+
+  getById = async (req, res) => {
+    try {
+      const invoice = await invoiceService.getInvoiceById(req.params.id);
+      if (!invoice) {
+        return res.status(404).json({ success: false, message: 'Invoice not found' });
+      }
+      res.json({ success: true, data: invoice });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+
+  create = async (req, res) => {
+    try {
+      const { customerName, customerState, items } = req.body;
+      if (!customerName) {
+        return res.status(400).json({ success: false, message: 'Customer name is required' });
+      }
+      if (!customerState) {
+        return res.status(400).json({ success: false, message: 'Customer state is required for GST calculation' });
+      }
+      if (!items || !Array.isArray(items) || items.length === 0) {
+        return res.status(400).json({ success: false, message: 'At least one item is required' });
+      }
+
+      const invoice = await invoiceService.createInvoice(req.body);
+      res.status(201).json({ success: true, message: 'Invoice generated successfully', data: invoice });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+
+  updateStatus = async (req, res) => {
+    try {
+      const { status } = req.body;
+      const invoice = await invoiceService.updateInvoiceStatus(req.params.id, status);
+      if (!invoice) {
+        return res.status(404).json({ success: false, message: 'Invoice not found' });
+      }
+      res.json({ success: true, message: 'Status updated successfully', data: invoice });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+
+  delete = async (req, res) => {
+    try {
+      const success = await invoiceService.deleteInvoice(req.params.id);
+      if (!success) {
+        return res.status(404).json({ success: false, message: 'Invoice not found' });
+      }
+      res.json({ success: true, message: 'Invoice deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+
+  getNextInvoiceNumber = async (req, res) => {
+    try {
+      const nextNumber = await invoiceService.generateInvoiceNumber();
+      res.json({ success: true, data: { nextInvoiceNumber: nextNumber } });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+  };
+}
+
+module.exports = new InvoiceController();
