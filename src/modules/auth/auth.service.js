@@ -7,35 +7,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'namami_invoice_secret_key_2025';
 
 class AuthService {
   /**
-   * Ensure at least one Admin account exists in the database
-   */
-  async ensureDefaultAdmin() {
-    try {
-      const existingAdmin = await User.findOne({ where: { role: 'ADMIN' } });
-      if (!existingAdmin) {
-        const hashedPassword = bcrypt.hashSync('123456', 10);
-        await User.create({
-          name: 'Admin',
-          role: 'ADMIN',
-          email: 'admin@namamienterprises.com',
-          contactNumber: '9999999999',
-          state: 'Gujarat',
-          city: 'Surat',
-          status: 'ACTIVE',
-          password: hashedPassword
-        });
-        console.log('👑 [Auth] Admin account seeded (admin@namamienterprises.com / 123456)');
-      } else if (!existingAdmin.password) {
-        existingAdmin.password = bcrypt.hashSync('123456', 10);
-        await existingAdmin.save();
-        console.log('👑 [Auth] Added password (123456) to existing Admin account');
-      }
-    } catch (err) {
-      console.warn('⚠️ [Auth] ensureDefaultAdmin warning:', err.message);
-    }
-  }
-
-  /**
    * Only ADMIN users are permitted to log in
    */
   async login(identifier, password) {
@@ -46,10 +17,7 @@ class AuthService {
       return { success: false, statusCode: 400, message: 'Please provide both username/email and password' };
     }
 
-    // Ensure default admin exists if DB is fresh
-    await this.ensureDefaultAdmin();
-
-    // Look up user by email, contactNumber, or name
+    // Look up user by email, contactNumber, or name from database
     let user = await User.findOne({
       where: {
         [Op.or]: [
@@ -81,17 +49,10 @@ class AuthService {
       };
     }
 
-    // Validate password
+    // Validate password directly against database
     let isMatch = false;
     if (user.password) {
       isMatch = bcrypt.compareSync(pwdStr, user.password) || (user.password === pwdStr);
-    } else {
-      // Fallback for admin without password yet
-      if (pwdStr === 'admin123' || pwdStr === 'admin') {
-        user.password = bcrypt.hashSync(pwdStr, 10);
-        await user.save();
-        isMatch = true;
-      }
     }
 
     if (!isMatch) {
