@@ -52,6 +52,11 @@ const Invoice = sequelize.define('Invoice', {
     type: DataTypes.STRING,
     allowNull: true
   },
+  customerGstin: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: ''
+  },
   // Snapshot of company data
   companyName: {
     type: DataTypes.STRING,

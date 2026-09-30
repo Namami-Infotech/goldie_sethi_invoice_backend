@@ -21,7 +21,8 @@ class UserService {
         { email: { [Op.like]: `%${search}%` } },
         { contactNumber: { [Op.like]: `%${search}%` } },
         { state: { [Op.like]: `%${search}%` } },
-        { city: { [Op.like]: `%${search}%` } }
+        { city: { [Op.like]: `%${search}%` } },
+        { gstNumber: { [Op.like]: `%${search}%` } }
       ];
     }
 
@@ -36,14 +37,16 @@ class UserService {
   }
 
   async createUser(data) {
+    const gstVal = data.gstNumber || data.gstin || data.pincode || '';
     return await User.create({
       name: data.name,
       role: data.role || 'USER',
       fullAddress: data.fullAddress || '',
       state: data.state || '',
       city: data.city || '',
+      gstNumber: gstVal,
       area: data.area || '',
-      pincode: data.pincode || '',
+      pincode: data.pincode || gstVal,
       contactNumber: data.contactNumber || '',
       email: data.email || '',
       status: data.status || 'ACTIVE'
@@ -54,14 +57,19 @@ class UserService {
     const user = await User.findByPk(id);
     if (!user) return null;
 
+    const gstVal = data.gstNumber !== undefined 
+      ? data.gstNumber 
+      : (data.gstin !== undefined ? data.gstin : (data.pincode !== undefined ? data.pincode : user.gstNumber));
+
     return await user.update({
       name: data.name !== undefined ? data.name : user.name,
       role: data.role !== undefined ? data.role : user.role,
       fullAddress: data.fullAddress !== undefined ? data.fullAddress : user.fullAddress,
       state: data.state !== undefined ? data.state : user.state,
       city: data.city !== undefined ? data.city : user.city,
+      gstNumber: gstVal,
       area: data.area !== undefined ? data.area : user.area,
-      pincode: data.pincode !== undefined ? data.pincode : user.pincode,
+      pincode: data.pincode !== undefined ? data.pincode : (gstVal || user.pincode),
       contactNumber: data.contactNumber !== undefined ? data.contactNumber : user.contactNumber,
       email: data.email !== undefined ? data.email : user.email,
       status: data.status !== undefined ? data.status : user.status

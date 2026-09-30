@@ -18,7 +18,7 @@ const User = sequelize.define('User', {
   },
   fullAddress: {
     type: DataTypes.TEXT,
-    allowNull: false,
+    allowNull: true,
     defaultValue: ''
   },
   state: {
@@ -28,7 +28,12 @@ const User = sequelize.define('User', {
   },
   city: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: ''
+  },
+  gstNumber: {
+    type: DataTypes.STRING,
+    allowNull: true,
     defaultValue: ''
   },
   area: {
