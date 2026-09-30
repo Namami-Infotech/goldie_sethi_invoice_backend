@@ -29,7 +29,9 @@ class ItemService {
   async createItem(data) {
     const qty = Number(data.qty) || 1;
     const pricePerUnit = Number(data.pricePerUnit) || 0;
-    const gstRate = Number(data.gstRate) || 0;
+    const gstRate = data.gstRate !== undefined && data.gstRate !== null && data.gstRate !== ''
+      ? Number(data.gstRate)
+      : 18;
     const taxable = qty * pricePerUnit;
     const gstAmount = Number(((taxable * gstRate) / 100).toFixed(2));
     const totalAmount = Number((taxable + gstAmount).toFixed(2));
@@ -53,7 +55,9 @@ class ItemService {
 
     const qty = data.qty !== undefined ? Number(data.qty) : item.qty;
     const pricePerUnit = data.pricePerUnit !== undefined ? Number(data.pricePerUnit) : item.pricePerUnit;
-    const gstRate = data.gstRate !== undefined ? Number(data.gstRate) : item.gstRate;
+    const gstRate = data.gstRate !== undefined && data.gstRate !== null && data.gstRate !== ''
+      ? Number(data.gstRate)
+      : item.gstRate;
     const taxable = qty * pricePerUnit;
     const gstAmount = Number(((taxable * gstRate) / 100).toFixed(2));
     const totalAmount = Number((taxable + gstAmount).toFixed(2));

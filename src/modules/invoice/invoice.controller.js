@@ -25,12 +25,16 @@ class InvoiceController {
 
   create = async (req, res) => {
     try {
-      const { customerName, customerState, items } = req.body;
+      const { customerName, items } = req.body;
+      let { customerState } = req.body;
       if (!customerName) {
         return res.status(400).json({ success: false, message: 'Customer name is required' });
       }
       if (!customerState) {
-        return res.status(400).json({ success: false, message: 'Customer state is required for GST calculation' });
+        const Setting = require('../setting/setting.model');
+        const setting = await Setting.findOne();
+        customerState = setting?.state || 'Gujarat';
+        req.body.customerState = customerState;
       }
       if (!items || !Array.isArray(items) || items.length === 0) {
         return res.status(400).json({ success: false, message: 'At least one item is required' });
