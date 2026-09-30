@@ -27,6 +27,14 @@ class InvoiceController {
     try {
       const { customerName, items } = req.body;
       let { customerState } = req.body;
+
+      if (req.body.invoiceDate && typeof req.body.invoiceDate === 'string' && req.body.invoiceDate.includes('/')) {
+        const parts = req.body.invoiceDate.trim().split('/');
+        if (parts.length === 3 && parts[2].length === 4) {
+          req.body.invoiceDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        }
+      }
+
       if (!customerName) {
         return res.status(400).json({ success: false, message: 'Customer name is required' });
       }
