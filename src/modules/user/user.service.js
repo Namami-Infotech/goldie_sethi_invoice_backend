@@ -11,8 +11,11 @@ class UserService {
       where.status = { [Op.ne]: 'INACTIVE' };
     }
 
-    if (role && (role === 'USER' || role === 'ADMIN')) {
+    // Admin users must never be returned in general user/client listings
+    if (role && role !== 'ADMIN') {
       where.role = role;
+    } else {
+      where.role = { [Op.ne]: 'ADMIN' };
     }
 
     if (search) {

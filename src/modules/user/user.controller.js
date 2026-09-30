@@ -4,7 +4,9 @@ class UserController {
   getAll = async (req, res) => {
     try {
       const { role, search, status } = req.query;
-      const users = await userService.getAllUsers(role, search, status);
+      // Admin users should not be returned in user listing
+      const targetRole = (role && role !== 'ADMIN') ? role : 'USER';
+      const users = await userService.getAllUsers(targetRole, search, status);
       res.json({ success: true, data: users });
     } catch (error) {
       res.status(500).json({ success: false, message: error.message });

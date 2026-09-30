@@ -60,6 +60,11 @@ const User = sequelize.define('User', {
     type: DataTypes.ENUM('ACTIVE', 'INACTIVE'),
     allowNull: false,
     defaultValue: 'ACTIVE'
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    defaultValue: null
   }
 }, {
   timestamps: true,

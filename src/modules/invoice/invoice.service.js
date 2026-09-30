@@ -110,12 +110,12 @@ class InvoiceService {
     let setting = await Setting.findOne();
     if (!setting) {
       setting = {
-        companyName: 'Namami Enterprises Pvt Ltd',
-        state: 'Gujarat',
-        city: 'Ahmedabad',
-        fullAddress: 'Plot No. 42, GIDC Phase 2, Industrial Area',
-        gstin: '24AAACN1234F1Z8',
-        phoneNo: '+91 98765 43210'
+        companyName: '',
+        state: '',
+        city: '',
+        fullAddress: '',
+        gstin: '',
+        phoneNo: ''
       };
     }
 

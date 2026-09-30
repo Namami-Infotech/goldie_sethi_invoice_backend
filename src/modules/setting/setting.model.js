@@ -9,69 +9,69 @@ const Setting = sequelize.define('Setting', {
   },
   companyName: {
     type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'Namami Enterprises Pvt Ltd'
+    allowNull: true,
+    defaultValue: ''
   },
   fullAddress: {
     type: DataTypes.TEXT,
-    allowNull: false,
-    defaultValue: 'Plot No. 42, GIDC Phase 2, Industrial Area'
+    allowNull: true,
+    defaultValue: ''
   },
   state: {
     type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'Gujarat'
+    allowNull: true,
+    defaultValue: ''
   },
   city: {
     type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'Ahmedabad'
+    allowNull: true,
+    defaultValue: ''
   },
   pincode: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: '380001'
+    defaultValue: null
   },
   phoneNo: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: '+91 98765 43210'
+    defaultValue: null
   },
   gstin: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: '24AAACN1234F1Z8'
+    defaultValue: null
   },
   hsa: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: 'HSA-998822'
+    defaultValue: null
   },
   email: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: 'billing@namamienterprises.com'
+    defaultValue: null
   },
   // Bank Details
   bankName: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: 'State Bank of India'
+    defaultValue: null
   },
   accountNumber: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: '382910482910'
+    defaultValue: null
   },
   ifscCode: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: 'SBIN0001234'
+    defaultValue: null
   },
   accountHolderName: {
     type: DataTypes.STRING,
     allowNull: true,
-    defaultValue: 'Namami Enterprises Pvt Ltd'
+    defaultValue: null
   }
 }, {
   timestamps: true,
