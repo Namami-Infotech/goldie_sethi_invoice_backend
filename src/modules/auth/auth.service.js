@@ -29,7 +29,7 @@ class AuthService {
     });
 
     if (!user) {
-      return { success: false, statusCode: 401, message: 'Invalid username/email or password' };
+      return { success: false, statusCode: 401, message: 'Invalid Credentials' };
     }
 
     // STRICT CHECK: Only ADMIN is allowed to log in
@@ -56,7 +56,7 @@ class AuthService {
     }
 
     if (!isMatch) {
-      return { success: false, statusCode: 401, message: 'Invalid username/email or password' };
+      return { success: false, statusCode: 401, message: 'Invalid Credentials' };
     }
 
     // Generate JWT

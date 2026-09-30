@@ -33,9 +33,13 @@ async function startServer() {
   try {
     await initDatabase();
 
-    // Sync database models
-    await sequelize.sync({ alter: true });
-    console.log('✅ [Database] Models synchronized successfully.');
+    // Sync database models safely
+    try {
+      await sequelize.sync();
+      console.log('✅ [Database] Models synchronized successfully.');
+    } catch (syncError) {
+      console.warn('⚠️ [Database] Model synchronization warning:', syncError.message);
+    }
 
     app.listen(PORT, () => {
       console.log(`🚀 [Server] Server running on http://localhost:${PORT}`);
